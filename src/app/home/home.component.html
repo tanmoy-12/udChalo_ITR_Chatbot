@@ -1,0 +1,49 @@
+<div class="navbar">
+  <div class="logo">
+    <img src="logo.png" alt="">
+  </div>
+  <span>Smart ITR Filing Chatbot</span>
+  <div class="logo1">
+    <img src="logo1.png" alt="">
+  </div>
+</div>
+
+<div class="main">
+  <div [ngClass]="{'centered': messages.length == 0, 'full': messages.length > 0}">
+    <div class="chatbot-messages" #chatbotMessages>
+      <div *ngFor="let message of messages" [ngClass]="{'user': message.sender === 'user', 'bot': message.sender === 'bot'}" class="message">
+        <div class="text" [innerHTML]="message.text"></div>
+      </div>
+
+      <!-- Show text only when no messages are present -->
+      <div *ngIf="messages.length == 0" class="chatbot-welcome">
+        <p class="welcome-text">Get ITR form tips, tax-saving investment advice, and more...</p>
+      </div>
+    </div>
+
+    <!-- Chatbot Input Section -->
+    <div class="chatbot-input" >
+      <div class="inputs">
+        <textarea contenteditable="true" [(ngModel)]="userInput" placeholder="Ask your query here..."
+          (keydown.enter)="sendMessage()" class="editable-div"></textarea>
+      </div>
+
+      <div class="chatsubmit">
+        <button (click)="sendMessage()">
+          <i class="fa-solid fa-arrow-up" *ngIf="!isLoading"></i>
+          <i class="fa-solid fa-square" *ngIf="isLoading"></i>
+        </button>
+      </div>
+    </div>
+    <div class="disclaimer" *ngIf="messages.length > 0">
+      <p>Chatbots may make errors, Check important info.</p>
+    </div>
+
+    <!-- Show Suggestions Only When No Messages -->
+    <div *ngIf="messages.length == 0" class="suggestions">
+      <button *ngFor="let suggestion of suggestions" (click)="sendSuggestion(suggestion)">
+        {{ suggestion }}
+      </button>
+    </div>
+  </div>
+</div>
